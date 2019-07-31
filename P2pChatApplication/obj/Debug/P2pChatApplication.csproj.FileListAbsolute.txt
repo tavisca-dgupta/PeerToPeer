@@ -1,0 +1,7 @@
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\obj\Debug\P2pChatApplication.csprojAssemblyReference.cache
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\obj\Debug\P2pChatApplication.csproj.CoreCompileInputs.cache
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\bin\Debug\P2pChatApplication.exe.config
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\bin\Debug\P2pChatApplication.exe
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\bin\Debug\P2pChatApplication.pdb
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\obj\Debug\P2pChatApplication.exe
+C:\Users\dgupta\source\repos\P2pChatApplication\P2pChatApplication\obj\Debug\P2pChatApplication.pdb
