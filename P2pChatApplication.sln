@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2pChatApplication", "P2pChatApplication\P2pChatApplication.csproj", "{8F9226C0-960D-4D0F-87DD-89D175614AFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F9226C0-960D-4D0F-87DD-89D175614AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F9226C0-960D-4D0F-87DD-89D175614AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F9226C0-960D-4D0F-87DD-89D175614AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F9226C0-960D-4D0F-87DD-89D175614AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A484B9C0-A89B-46AA-B777-CC6AE01E40AF}
+	EndGlobalSection
+EndGlobal
