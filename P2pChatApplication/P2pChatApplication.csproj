@@ -49,6 +49,7 @@
     <Compile Include="Network.cs" />
     <Compile Include="NetworkHostConnector.cs" />
     <Compile Include="NetworkHostListener.cs" />
+    <Compile Include="ParseUserName.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs" />

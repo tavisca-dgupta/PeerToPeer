@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2pChatApplication
@@ -24,28 +25,33 @@ namespace P2pChatApplication
             _conversation = new Conversation();
 
         }
-        public void ConnectListener(string address)
+        public void ConnectListener(string address,int portNumber,string clientName)
         {
-            _listenerSocket = _network.GetSocket(address);
+            _listenerSocket = _network.GetSocket(address,portNumber);
             try
             {
                 _network.Connect(_listenerSocket);
-                Console.WriteLine(" connected to -> {0} ",
-                              _listenerSocket.RemoteEndPoint.ToString());
+                Console.WriteLine($"************{clientName}***********");
                 while (true)
                 {
-                    string input;
-                    input = Console.ReadLine();
-                    _conversation.SendMessage(_listenerSocket, input);
-                    _conversation.ReceiveMessage(_listenerSocket);
+
                     if (_conversation.NeedToAbort())
                         break;
-                    else
-                        continue;
+                    ThreadPool.QueueUserWorkItem(_=> 
+                    {
+                        string input;
+                        input = Console.ReadLine();
+                        _conversation.SendMessage(_listenerSocket, input);
+                    });
+
+
+                    ThreadPool.QueueUserWorkItem(_ =>
+                    {
+                        _conversation.ReceiveMessage(_listenerSocket);
+                    });
 
                 }
                 _connection.CloseConnection(_listenerSocket);
-                _listener.StartListening();
             }
             catch
             {

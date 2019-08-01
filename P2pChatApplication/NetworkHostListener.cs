@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2pChatApplication
@@ -22,9 +23,9 @@ namespace P2pChatApplication
             _conversation = new Conversation();
 
         }
-        public void StartListening()
+        public void StartListening(int portNumber)
         {
-             _listenerSocket = _network.GetSocket("192.168.1.13");
+             _listenerSocket = _network.GetSocket("172.16.5.243",portNumber);
             try
             {
                 _network.BindSocket(_listenerSocket);
@@ -36,17 +37,20 @@ namespace P2pChatApplication
                     Socket clientSocket = _listenerSocket.Accept();
                     while (true)
                     {
-                        _conversation.ReceiveMessage(clientSocket);
-                        string input;
-                        input = Console.ReadLine();
-                        _conversation.SendMessage(clientSocket, input);
                         if (_conversation.NeedToAbort())
-                        {
                             break;
-                        }
-                        else
-                            continue;
+                        ThreadPool.QueueUserWorkItem(_ =>
+                       {
+                           _conversation.ReceiveMessage(clientSocket);
+                       });
 
+                        ThreadPool.QueueUserWorkItem(_=>
+                        {
+                            string input;
+                            input = Console.ReadLine();
+                            _conversation.SendMessage(clientSocket, input);
+                        });
+                                                
                     }
                     _connection.CloseConnection(clientSocket);
 

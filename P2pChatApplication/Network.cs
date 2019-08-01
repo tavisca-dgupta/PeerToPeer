@@ -28,12 +28,12 @@ namespace P2pChatApplication
         //         SocketType.Stream, ProtocolType.Tcp);
         //}
 
-        public Socket GetSocket(string address)
+        public Socket GetSocket(string address,int portNumber)
         {
             //IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
 
             IPAddress ipAddr = IPAddress.Parse(address);
-            localEndPoint = new IPEndPoint(ipAddr, 11111);
+            localEndPoint = new IPEndPoint(ipAddr, portNumber);
             return new Socket(ipAddr.AddressFamily,
                  SocketType.Stream, ProtocolType.Tcp);
         }

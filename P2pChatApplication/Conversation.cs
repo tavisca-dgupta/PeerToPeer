@@ -4,10 +4,10 @@ using System.Text;
 
 namespace P2pChatApplication
 {
-    public class Conversation
+    public class Conversation 
     {
         private Display _display;
-        private bool abort = false;
+        private static bool abort = false;
 
         public Conversation()
         {
@@ -17,8 +17,10 @@ namespace P2pChatApplication
         public void SendMessage(Socket socket,string message)
         {
             byte[] messageSent = Encoding.ASCII.GetBytes(message);
+            
             int byteSent = socket.Send(messageSent);
-            if(message.Equals("bye"))
+
+            if (message.Equals("bye"))
             {
                 abort = true;
             }
@@ -29,13 +31,7 @@ namespace P2pChatApplication
             int byteReceived = socket.Receive(messageReceived);
             string data = Encoding.ASCII.GetString(messageReceived, 0, byteReceived);
             _display.DisplayReceivedMessage(data);
-            if (data.IndexOf("bye") > -1)
-            {
-                byte[] messageSent = Encoding.ASCII.GetBytes("bye");
-                socket.Send(messageSent);
-                System.Threading.Thread.Sleep(5000);
-                abort = true;
-            }
+
         }
 
         public bool NeedToAbort()
