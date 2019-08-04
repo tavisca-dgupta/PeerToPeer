@@ -23,7 +23,6 @@ namespace P2pChatApplication
             _network = network;
             _connection = connection;
             _conversation = new Conversation();
-
         }
         public void ConnectListener(string address,int portNumber,string clientName)
         {
@@ -32,31 +31,49 @@ namespace P2pChatApplication
             {
                 _network.Connect(_listenerSocket);
                 Console.WriteLine($"************{clientName}***********");
-                while (true)
+                var sendThread=new Thread(_ =>
                 {
-
-                    if (_conversation.NeedToAbort())
-                        break;
-                    ThreadPool.QueueUserWorkItem(_=> 
+                    try
                     {
-                        string input;
-                        input = Console.ReadLine();
-                        _conversation.SendMessage(_listenerSocket, input);
-                    });
-
-
-                    ThreadPool.QueueUserWorkItem(_ =>
+                        while (!(Conversation.abort))
+                        {
+                            string input;
+                            input = Console.ReadLine();
+                            _conversation.SendMessage(_listenerSocket, input);
+                        }
+                    }
+                    catch(Exception e)
                     {
-                        _conversation.ReceiveMessage(_listenerSocket);
-                    });
+                        Console.WriteLine("Your connection is ended");
+                    }
+                });
 
-                }
-                _connection.CloseConnection(_listenerSocket);
+                var receiveThread=new Thread(_ =>
+                {
+                    try
+                    {
+                        while (!(Conversation.abort))
+                        {
+                            _conversation.ReceiveMessage(_listenerSocket);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Your connection is ended");
+                    }
+                });
+
+                sendThread.Start();
+                receiveThread.Start();
+                
+                
+               // _connection.CloseConnection(_listenerSocket);
             }
             catch
             {
                 Console.WriteLine("Unbale to connect");
             }
         }
+      
     }
 }

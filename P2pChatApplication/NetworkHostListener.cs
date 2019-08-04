@@ -30,32 +30,10 @@ namespace P2pChatApplication
             {
                 _network.BindSocket(_listenerSocket);
                 _listenerSocket.Listen(10);
-
-                while (true)
-                {
-                    Console.WriteLine("Waiting connection ... ");
-                    Socket clientSocket = _listenerSocket.Accept();
-                    while (true)
-                    {
-                        if (_conversation.NeedToAbort())
-                            break;
-                        ThreadPool.QueueUserWorkItem(_ =>
-                       {
-                           _conversation.ReceiveMessage(clientSocket);
-                       });
-
-                        ThreadPool.QueueUserWorkItem(_=>
-                        {
-                            string input;
-                            input = Console.ReadLine();
-                            _conversation.SendMessage(clientSocket, input);
-                        });
-                                                
-                    }
-                    _connection.CloseConnection(clientSocket);
-
-                }
-
+                Console.WriteLine("Waiting connection ... ");
+                Socket clientSocket = _listenerSocket.Accept();
+                startConversation(clientSocket);
+              
             }
 
             catch (Exception e)
@@ -72,6 +50,47 @@ namespace P2pChatApplication
         public void StopListening()
         {
             _connection.CloseConnection(_listenerSocket);
+        }
+
+        public void startConversation(Socket clientSocket)
+        {
+            var sendThread = new Thread(_ =>
+            {
+                try
+                {
+                    while (!(Conversation.abort))
+                    {
+                        string input;
+                        input = Console.ReadLine();
+                        _conversation.SendMessage(clientSocket, input);
+                    }
+                    _connection.CloseConnection(clientSocket);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Your connection is ended");
+                }
+            });
+
+            var receiveThread = new Thread(_ =>
+            {
+                try
+                {
+                    while (!(Conversation.abort))
+                    {
+                        _conversation.ReceiveMessage(clientSocket);
+                    }
+                    _connection.CloseConnection(clientSocket);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Your connection is ended");
+                }
+            });
+            receiveThread.Start();
+            sendThread.Start();
+            
+            
         }
     }
 }

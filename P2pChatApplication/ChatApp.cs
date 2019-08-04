@@ -22,12 +22,18 @@ namespace P2pChatApplication
             Console.WriteLine("Enter the port in which you want to start the connection");
             string portNo = Console.ReadLine();
             int portNumber = int.Parse(portNo);
-            var startListeningThread = new Thread(_ =>
-            {
-                _networkHostListener.StartListening(portNumber);
-            });
+            //var startListeningThread = new Thread(_ =>
+            //{
+            //    _networkHostListener.StartListening(portNumber);
+               
+            //});
 
-            startListeningThread.Start();
+            //startListeningThread.Start();
+
+
+            Thread listenerThread = new Thread(new ThreadStart(() => _networkHostListener.StartListening(portNumber)));
+            listenerThread.Start();
+
             Console.WriteLine("Hey do you want to start the conversation if yes then press 'Y' else press 'N'");
             var input=Console.ReadLine();
             if(input.ToLower().Equals("y"))
@@ -35,13 +41,12 @@ namespace P2pChatApplication
                 Console.WriteLine("Enter the username and port in which you want to connect with");
                 Console.WriteLine("eg: xyz@'ipofxyz':port number");
                 string userName = Console.ReadLine();
-                startListeningThread.Suspend();
                 if (_userNameparser.SetIpAddressAndPortNumber(userName))
+                {
                     _networkHostConnector.ConnectListener(_userNameparser.clientIp, _userNameparser.clientPortNumber, _userNameparser.clientName);
+                }
                 else
                     Console.WriteLine("oopss it seems you didn't wrote in correct format");
-                _networkHostListener.StartListening(portNumber);
-
             }
             else
             {

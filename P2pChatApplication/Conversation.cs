@@ -7,23 +7,23 @@ namespace P2pChatApplication
     public class Conversation 
     {
         private Display _display;
-        private static bool abort = false;
+        public static bool abort;
 
         public Conversation()
         {
+            abort = false;
             _display = new Display();
         }
 
         public void SendMessage(Socket socket,string message)
         {
             byte[] messageSent = Encoding.ASCII.GetBytes(message);
-            
             int byteSent = socket.Send(messageSent);
-
-            if (message.Equals("bye"))
+            if (message.ToLower().Equals("bye"))
             {
                 abort = true;
             }
+            
         }
         public void ReceiveMessage(Socket socket)
         {
@@ -31,13 +31,13 @@ namespace P2pChatApplication
             int byteReceived = socket.Receive(messageReceived);
             string data = Encoding.ASCII.GetString(messageReceived, 0, byteReceived);
             _display.DisplayReceivedMessage(data);
+            if (data.ToLower().Equals("bye"))
+            {
+                abort = true;
+            }
 
         }
-
-        public bool NeedToAbort()
-        {
-            return abort;
-        }
-
+    
+      
     }
 }

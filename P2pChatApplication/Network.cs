@@ -12,22 +12,6 @@ namespace P2pChatApplication
     {
         IPEndPoint localEndPoint;
 
-        //private IPAddress GetIpAddress(string address)
-        //{
-        //    return IPAddress.Parse(address);
-        //}
-        //public IPEndPoint GetIpEndpoint(string address)
-        //{
-        //    localEndPoint = new IPEndPoint(GetIpAddress(address), 11111);
-        //    return localEndPoint;
-        //}
-        //public Socket GetSocket(string address)
-        //{
-
-        //    return new Socket(GetIpAddress(address).AddressFamily,
-        //         SocketType.Stream, ProtocolType.Tcp);
-        //}
-
         public Socket GetSocket(string address,int portNumber)
         {
             //IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
